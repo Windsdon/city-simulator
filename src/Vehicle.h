@@ -39,6 +39,7 @@ class Vehicle {
 		void nextMove();
 
 		int x, y;
+		int px, py;
 		bool moved;
 
 	private:

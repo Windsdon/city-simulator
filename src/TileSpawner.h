@@ -20,7 +20,7 @@ class TileSpawner: public Tile {
 			return TileType::Spawner;
 		}
 
-		static sf::Texture spawnerTexture;
+		static sf::Texture texture;
 
 		bool spawnNext(Vehicle*&);
 		void addVehicle(Vehicle*);

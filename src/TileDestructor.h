@@ -16,5 +16,10 @@ class TileDestructor: public Tile {
 		TileType getType() {
 			return TileType::Destructor;
 		}
+
+		static sf::Texture texture;
+
+	private:
+		sf::RectangleShape rect;
 };
 

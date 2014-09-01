@@ -21,7 +21,7 @@ class City {
 	public:
 		City(int sizeX, int sizeY);
 
-		void render(sf::RenderTarget& target);
+		void render(sf::RenderTarget& target, float completion);
 
 		/*
 		 * Make the cars move!

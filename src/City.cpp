@@ -10,6 +10,8 @@
 #include "TileColour.h"
 #include "TileRoad.h"
 #include "TileSpawner.h"
+#include "TileIntersection.h"
+#include "TileDestructor.h"
 
 #include <set>
 #include <iostream>
@@ -19,10 +21,15 @@ City::City(int sizeX, int sizeY) :
 
 	//////////
 	queue<Move> moves;
-	for(int i = 0; i < 12; i++){
+	for (int i = 0; i < 19; i++) {
 		moves.push(Move(1, 0, true));
 	}
+	for (int i = 0; i < 19; i++) {
+		moves.push(Move(0, 1, true));
+	}
 	//////////
+
+	Intersection *intersection = new Intersection();
 
 	for (int i = 0; i < sizeY; i++) {
 		for (int j = 0; j < sizeX; j++) {
@@ -31,8 +38,18 @@ City::City(int sizeX, int sizeY) :
 				tiles[i][j] = spawner;
 				spawners.push_back((TileSpawner*) tiles[i][j]);
 				for (int i = 0; i < 10; i++) {
-					spawner->addVehicle(new Vehicle(moves, 0, 0));
+					Vehicle *v = new Vehicle(moves, 0, 0);
+					v->px = -1;
+					spawner->addVehicle(v);
 				}
+				continue;
+			}
+			if (!i && j == (sizeX - 1)) {
+				tiles[i][j] = new TileIntersection(intersection, j, i);
+				continue;
+			}
+			if (i == (sizeY - 1) && j == (sizeX - 1)) {
+				tiles[i][j] = new TileDestructor(j, i);
 				continue;
 			}
 			if (!i) {
@@ -63,7 +80,7 @@ void City::registerVehicle(Vehicle* v) {
 	}
 }
 
-void City::render(sf::RenderTarget& target) {
+void City::render(sf::RenderTarget& target, float completion) {
 
 	//Calculate scaling
 	int windowSizeX = target.getSize().x;
@@ -93,7 +110,8 @@ void City::render(sf::RenderTarget& target) {
 
 		sf::RenderStates states;
 		states.transform.translate(xStart, yStart).scale(scale, scale).translate(
-				car->x, car->y);
+				completion * (car->x) + (1 - completion) * car->px,
+				completion * car->y + (1 - completion) * car->py);
 
 		car->render(target, states);
 	}
@@ -144,6 +162,9 @@ void City::doTick() {
 		cout << "Trying to move " << car << " at " << car->x << " " << car->y
 				<< endl;
 
+		car->px = car->x;
+		car->py = car->y;
+
 		if (car->nextMove(toX, toY)) {
 			Tile* dest = getTileAt(toX, toY);
 
@@ -161,8 +182,9 @@ void City::doTick() {
 						it != updateList.end(); ++it) {
 					cout << "Searching vehicle at " << *it << endl;
 					if ((*it)->occupied) {
-						cout << "Found. Checking move status of "<< (*it)->v << endl;
-						if((*it)->v->moved){
+						cout << "Found. Checking move status of " << (*it)->v
+								<< endl;
+						if ((*it)->v->moved) {
 							continue;
 						}
 						update.insert((*it)->v);
@@ -173,6 +195,7 @@ void City::doTick() {
 				car->x = toX;
 				car->y = toY;
 				car->nextMove();
+				car->moved = true;
 
 				dest->occupied = true;
 			}

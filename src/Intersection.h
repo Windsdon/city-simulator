@@ -7,6 +7,10 @@
 
 #pragma once
 
+#include "TileIntersection.h"
+
+class TileIntersection;
+
 class Intersection {
 	public:
 		Intersection();

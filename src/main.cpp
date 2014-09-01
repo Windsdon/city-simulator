@@ -13,23 +13,27 @@
 #include "City.h"
 #include "TileRoad.h"
 #include "TileSpawner.h"
+#include "TileDestructor.h"
+#include "TileIntersection.h"
 
 using namespace sf;
 using namespace std;
 
 int main(int argc, char **argv) {
 	cout << "" << endl;
-	VideoMode vm(1280, 720);
+	VideoMode vm(720, 720);
 	RenderWindow window(vm, "City", Style::Close);
 
-	TileRoad::roadTexture.loadFromFile("res/road.png");
-	TileSpawner::spawnerTexture.loadFromFile("res/spawner.png");
+	TileRoad::texture.loadFromFile("res/road.png");
+	TileSpawner::texture.loadFromFile("res/spawner.png");
+	TileIntersection::texture.loadFromFile("res/intersection.png");
+	TileDestructor::texture.loadFromFile("res/destructor.png");
 
 	City test(20, 20);
 
 	sf::Clock clock;
 	sf::Time extra = sf::seconds(0);
-	sf::Time tickTime = sf::seconds(1);
+	sf::Time tickTime = sf::seconds(0.5);
 
 	while (window.isOpen()) {
 		Event e;
@@ -46,7 +50,7 @@ int main(int argc, char **argv) {
 
 		window.clear(sf::Color::Black);
 
-		test.render(window);
+		test.render(window, (clock.getElapsedTime() + extra).asSeconds()/tickTime.asSeconds());
 
 		window.display();
 	}

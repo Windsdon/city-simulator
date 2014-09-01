@@ -19,7 +19,7 @@ class TileRoad: public Tile {
 
 		int move;
 
-		static sf::Texture roadTexture;
+		static sf::Texture texture;
 
 	private:
 		sf::RectangleShape rect;

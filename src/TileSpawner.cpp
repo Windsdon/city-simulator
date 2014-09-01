@@ -7,10 +7,10 @@
 
 #include "TileSpawner.h"
 
-sf::Texture TileSpawner::spawnerTexture;
+sf::Texture TileSpawner::texture;
 
 TileSpawner::TileSpawner(int x, int y): Tile(x, y), rect(sf::Vector2f(1.0, 1.0)) {
-	rect.setTexture(&spawnerTexture, true);
+	rect.setTexture(&texture, true);
 }
 
 void TileSpawner::render(sf::RenderTarget& target, sf::RenderStates& states){

@@ -7,8 +7,10 @@
 
 #include "Vehicle.h"
 
+#include <iostream>
+
 Vehicle::Vehicle(queue<Move> moveList, int x, int y) :
-		x(x), y(y), moveList(moveList), rect(sf::Vector2f(0.7, 0.7)) {
+		x(x), y(y), px(x), py(y), moved(false), moveList(moveList), rect(sf::Vector2f(0.7, 0.7)) {
 	rect.setFillColor(sf::Color(200, 200, 200));
 	rect.move(0.15, 0.15);
 }
@@ -28,6 +30,7 @@ bool Vehicle::nextMove(int& x, int& y) {
 }
 
 void Vehicle::nextMove() {
+	cout << "Car " << this << " moving on" << endl;
 	moveList.pop();
 }
 

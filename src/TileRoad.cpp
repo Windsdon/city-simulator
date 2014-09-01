@@ -10,11 +10,11 @@
 #include<iostream>
 using namespace std;
 
-sf::Texture TileRoad::roadTexture;
+sf::Texture TileRoad::texture;
 
 TileRoad::TileRoad(int d, int x, int y) :
 		Tile(x, y), move(d), rect(sf::Vector2f(1.0, 1.0)) {
-	rect.setTexture(&roadTexture, true);
+	rect.setTexture(&texture, true);
 	rect.setOrigin(sf::Vector2f(0.5, 0.5));
 	rect.rotate(90 * move);
 	rect.move(0.5, 0.5);
